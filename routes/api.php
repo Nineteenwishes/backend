@@ -7,6 +7,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\KunjunganUksController;
 use App\Http\Controllers\RiwayatKunjunganUksController;
+use App\Http\Controllers\JadwalPiketController;
 
 // Route publik
 Route::post('/login', [AuthController::class, 'login']);
@@ -19,9 +20,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Route untuk admin dan staff
     Route::middleware('role:admin,staff')->group(function () {
-        // Route untuk data siswa (hanya read)
+
         Route::get('/students', [StudentController::class, 'index']);
-        // Penting: Route dengan parameter spesifik harus didefinisikan sebelum route dengan parameter dinamis
         Route::get('/students/nis/{nis}', [StudentController::class, 'findByNis']);
         Route::get('/students/{id}', [StudentController::class, 'show']);
 
@@ -42,10 +42,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/riwayat-kunjungan-uks', [RiwayatKunjunganUksController::class, 'index']);
         Route::post('/riwayat-kunjungan-uks/store', [RiwayatKunjunganUksController::class, 'store']);
         Route::get('/riwayat-kunjungan-uks/export', [RiwayatKunjunganUksController::class, 'export']);
-        
+
         Route::get('/riwayat-kunjungan-uks/{id}', [RiwayatKunjunganUksController::class, 'show']);
         Route::put('/riwayat-kunjungan-uks/{id}', [RiwayatKunjunganUksController::class, 'update']);
         Route::delete('/riwayat-kunjungan-uks/{id}', [RiwayatKunjunganUksController::class, 'destroy']);
+
+
 
         // Route khusus admin saja
         Route::middleware('role:admin')->group(function () {
@@ -58,6 +60,11 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('/students', [StudentController::class, 'store']);
             Route::put('/students/{id}', [StudentController::class, 'update']); // Mengubah dari POST ke PUT
             Route::delete('/students/{id}', [StudentController::class, 'destroy']);
+
+
+            Route::post('/jadwal-piket', [JadwalPiketController::class, 'store']);
+            Route::put('/jadwal-piket/{id}', [JadwalPiketController::class, 'update']);
+            Route::delete('/jadwal-piket/{id}', [JadwalPiketController::class, 'destroy']);
         });
     });
 
@@ -71,5 +78,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('/riwayat-kunjungan-uks', [RiwayatKunjunganUksController::class, 'index']);
         Route::get('/riwayat-kunjungan-uks/{id}', [RiwayatKunjunganUksController::class, 'show']);
+
+        Route::get('/jadwal-piket', [JadwalPiketController::class, 'index']);
+        Route::get('/jadwal-piket/{id}', [JadwalPiketController::class, 'show']);
     });
 });

@@ -15,9 +15,9 @@ class Medicine extends Model
         'deskripsi'
     ];
 
-    // Tambahkan relasi dengan UksVisit
-    public function uksVisits()
+    // Tambahkan relasi dengan Kunjungan uks
+    public function KunjunganUks()
     {
-        return $this->hasMany(UksVisit::class);
+        return $this->hasMany(KunjunganUks::class);
     }
 }
