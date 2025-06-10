@@ -13,5 +13,6 @@ class JadwalPiket extends Model
         'nis',
         'nama',
         'kelas',
+        'hari',
     ];
 }

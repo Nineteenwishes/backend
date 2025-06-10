@@ -26,6 +26,7 @@ class JadwalPiketController extends Controller
             'nis' => 'required|string|max:255',
             'nama' => 'required|string|max:255',
             'kelas' => 'required|string|max:255',
+            'hari' => 'required|string|max:50',  // Validasi kolom hari
         ]);
 
         if ($validator->fails()) {
@@ -65,6 +66,7 @@ class JadwalPiketController extends Controller
             'nis' => 'sometimes|required|string|max:255',
             'nama' => 'sometimes|required|string|max:255',
             'kelas' => 'sometimes|required|string|max:255',
+            'hari' => 'sometimes|required|string|max:50',  // Validasi kolom hari
         ]);
 
         if ($validator->fails()) {
@@ -88,5 +90,19 @@ class JadwalPiketController extends Controller
 
         $jadwalPiket->delete();
         return response()->json(['message' => 'Jadwal piket berhasil dihapus']);
+    }
+
+    /**
+     * Get jadwal piket berdasarkan hari tertentu.
+     */
+    public function getByHari(string $hari)
+    {
+        $jadwal = JadwalPiket::where('hari', $hari)->get();
+
+        if ($jadwal->isEmpty()) {
+            return response()->json(['message' => 'Jadwal piket untuk hari ' . $hari . ' tidak ditemukan'], 404);
+        }
+
+        return response()->json(['data' => $jadwal]);
     }
 }

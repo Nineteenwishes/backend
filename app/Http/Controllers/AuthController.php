@@ -157,6 +157,33 @@ class AuthController extends Controller
     }
 
     /**
+     * Forgot password (reset password) by username
+     */
+    public function forgotPassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|string|exists:users,username',
+            'new_password' => 'required|string|min:8',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $user = User::where('username', $request->username)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'Username tidak ditemukan.'], 404);
+        }
+
+        $user->update([
+            'password' => Hash::make($request->new_password)
+        ]);
+
+        return response()->json(['message' => 'Kata sandi berhasil direset.']);
+    }
+
+    /**
      * Get all users (admin only)
      */
     public function index(Request $request)

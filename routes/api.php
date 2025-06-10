@@ -11,7 +11,7 @@ use App\Http\Controllers\JadwalPiketController;
 
 // Route publik
 Route::post('/login', [AuthController::class, 'login']);
-
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 
 // Route yang memerlukan autentikasi
 Route::middleware('auth:sanctum')->group(function () {
@@ -47,8 +47,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/riwayat-kunjungan-uks/{id}', [RiwayatKunjunganUksController::class, 'update']);
         Route::delete('/riwayat-kunjungan-uks/{id}', [RiwayatKunjunganUksController::class, 'destroy']);
 
-
-
         // Route khusus admin saja
         Route::middleware('role:admin')->group(function () {
             Route::post('/register', [AuthController::class, 'register']);
@@ -60,7 +58,6 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('/students', [StudentController::class, 'store']);
             Route::put('/students/{id}', [StudentController::class, 'update']); // Mengubah dari POST ke PUT
             Route::delete('/students/{id}', [StudentController::class, 'destroy']);
-
 
             Route::post('/jadwal-piket', [JadwalPiketController::class, 'store']);
             Route::put('/jadwal-piket/{id}', [JadwalPiketController::class, 'update']);
@@ -81,5 +78,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('/jadwal-piket', [JadwalPiketController::class, 'index']);
         Route::get('/jadwal-piket/{id}', [JadwalPiketController::class, 'show']);
+        Route::get('/jadwal-piket/hari/{hari}', [JadwalPiketController::class, 'getByHari']);
     });
 });
